@@ -16,6 +16,11 @@ navOnClick = function() {
     let cat = $(this).html();
     $('h1').html(cat);
 
+    if(cat == 'All Menu'){
+        $.getJSON('data/pizza.json', createObject);
+        return;
+    }
+
     $.getJSON('data/pizza.json', function(data) {
         let menus = data.menu;
         let cont = '';
