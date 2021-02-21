@@ -23,7 +23,7 @@ function searchMovie(){
                                 <h6 class="card-subtitle mb-2 text-muted">${data.imdbID}</h6>
                                 <p class="card-text">${data.Year}</p>
                                     <h5 class="card-title">${data.Title}</h5>
-                                    <a href="#" class="card-link">See details</a>
+                                    <a href="#" class="card-link" data-bs-toggle="modal" data-bs-target="#exampleModal">See details</a>
                                 </div>
                             </div>
                         </div>
