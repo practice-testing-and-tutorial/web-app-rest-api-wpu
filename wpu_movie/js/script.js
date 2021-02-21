@@ -12,7 +12,7 @@ function searchMovie(){
             if(result.Response == "True"){
                 let movies = result.Search;
 
-                console.log(movies);
+                // console.log(movies);
 
                 $.each(movies, function (i, data) {
                     $('#movie-list').append(`
@@ -23,7 +23,7 @@ function searchMovie(){
                                 <h6 class="card-subtitle mb-2 text-muted">${data.imdbID}</h6>
                                 <p class="card-text">${data.Year}</p>
                                     <h5 class="card-title">${data.Title}</h5>
-                                    <a href="#" class="card-link" data-bs-toggle="modal" data-bs-target="#exampleModal">See details</a>
+                                    <a href="#" class="card-link see-detail" data-bs-toggle="modal" data-bs-target="#exampleModal" data-id="${data.imdbID}">See details</a>
                                 </div>
                             </div>
                         </div>
@@ -50,4 +50,43 @@ $('#search-input').on('keyup', function(e){
     else if(e.which === 27){
         $('#search-input').val('');
     }
+});
+
+$('#movie-list').on('click', '.see-detail', function(){ // event binding or event delegation
+    console.log($(this).data('id'));
+    $.ajax({
+        url: 'http://omdbapi.com',
+        type: 'get',
+        dataType: 'json',
+        data: {
+            'apikey' : 'f28921a4',
+            'i': $(this).data('id')
+        },
+        success: function(result){
+            if(result.Response === "True"){
+                $('.modal-body').html(`
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <img src="${result.Poster}" class="img-fluid">
+                            </div>
+
+                            <div class="col-md-8">
+                                <ul class="list-group">
+                                    <li class="list-group-item"><h3>${result.Title}</h3></li>
+                                    <li class="list-group-item">Released: ${result.Released}</li>
+                                    <li class="list-group-item">Genre: ${result.Genre}</li>
+                                    <li class="list-group-item">Director: ${result.Director}</li>
+                                    <li class="list-group-item">Actors: ${result.Actors}</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                `);
+            }
+            else {
+                //
+            }
+        }
+    });
 });
